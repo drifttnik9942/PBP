@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Parking Timer</title>
+<meta name="description" content="Track your parking session countdown and get reminded before it expires." />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0f1210" />
+
+<!-- iOS PWA support -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Parking" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ SETUP SCREEN ============ -->
+  <section id="setup-screen" class="screen" aria-labelledby="setup-title">
+    <header class="setup-hero">
+      <svg class="skyline" viewBox="0 0 800 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1c2b22"/>
+            <stop offset="100%" stop-color="#0f1210"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="220" fill="url(#sky)"/>
+        <g fill="#152018">
+          <rect x="20" y="110" width="46" height="110"/>
+          <rect x="80" y="70" width="34" height="150"/>
+          <rect x="128" y="130" width="60" height="90"/>
+          <rect x="200" y="90" width="40" height="130"/>
+          <rect x="250" y="150" width="80" height="70"/>
+          <rect x="345" y="60" width="30" height="160"/>
+          <rect x="390" y="120" width="55" height="100"/>
+          <rect x="460" y="95" width="42" height="125"/>
+          <rect x="515" y="140" width="70" height="80"/>
+          <rect x="600" y="75" width="36" height="145"/>
+          <rect x="650" y="125" width="58" height="95"/>
+          <rect x="720" y="100" width="44" height="120"/>
+        </g>
+        <g fill="#7ed957" opacity="0.55">
+          <rect x="32" y="130" width="5" height="5"/>
+          <rect x="46" y="150" width="5" height="5"/>
+          <rect x="92" y="95" width="5" height="5"/>
+          <rect x="210" y="115" width="5" height="5"/>
+          <rect x="355" y="90" width="5" height="5"/>
+          <rect x="470" y="120" width="5" height="5"/>
+          <rect x="612" y="105" width="5" height="5"/>
+          <rect x="662" y="150" width="5" height="5"/>
+          <rect x="732" y="130" width="5" height="5"/>
+        </g>
+      </svg>
+      <p class="eyebrow">Set up a new session</p>
+      <h1 id="setup-title">Parking Timer</h1>
+    </header>
+
+    <form id="setup-form" class="setup-form">
+      <label class="field">
+        <span>Lot name</span>
+        <input type="text" id="f-location-name" placeholder="e.g. Imperial Parking" required maxlength="40" />
+      </label>
+
+      <label class="field">
+        <span>Lot / spot number</span>
+        <input type="text" id="f-location-id" placeholder="e.g. 28650" required maxlength="20" />
+      </label>
+
+      <label class="field">
+        <span>License plate</span>
+        <input type="text" id="f-plate" placeholder="e.g. BTN4OF" required maxlength="12" style="text-transform:uppercase" />
+      </label>
+
+      <label class="field">
+        <span>Vehicle (optional)</span>
+        <input type="text" id="f-vehicle" placeholder="e.g. white tacoma" maxlength="30" />
+      </label>
+
+      <div class="field">
+        <span>Duration</span>
+        <div class="chip-row" id="duration-chips">
+          <button type="button" class="chip" data-mins="15">15m</button>
+          <button type="button" class="chip" data-mins="30">30m</button>
+          <button type="button" class="chip is-selected" data-mins="60">1h</button>
+          <button type="button" class="chip" data-mins="120">2h</button>
+          <button type="button" class="chip" data-mins="240">4h</button>
+        </div>
+        <input type="number" id="f-duration-custom" min="1" max="1440" placeholder="Custom minutes" />
+      </div>
+
+      <button type="submit" class="btn-primary">Start session</button>
+    </form>
+  </section>
+
+  <!-- ============ SESSION SCREEN ============ -->
+  <section id="session-screen" class="screen" aria-labelledby="session-title">
+    <header class="session-hero">
+      <svg class="skyline" viewBox="0 0 800 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1c2b22"/>
+            <stop offset="100%" stop-color="#0f1210"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="220" fill="url(#sky2)"/>
+        <g fill="#152018">
+          <rect x="20" y="110" width="46" height="110"/>
+          <rect x="80" y="70" width="34" height="150"/>
+          <rect x="128" y="130" width="60" height="90"/>
+          <rect x="200" y="90" width="40" height="130"/>
+          <rect x="250" y="150" width="80" height="70"/>
+          <rect x="345" y="60" width="30" height="160"/>
+          <rect x="390" y="120" width="55" height="100"/>
+          <rect x="460" y="95" width="42" height="125"/>
+          <rect x="515" y="140" width="70" height="80"/>
+          <rect x="600" y="75" width="36" height="145"/>
+          <rect x="650" y="125" width="58" height="95"/>
+          <rect x="720" y="100" width="44" height="120"/>
+        </g>
+      </svg>
+      <button id="btn-close" class="btn-close" aria-label="End session and close">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+      <h1 id="session-title"></h1>
+    </header>
+
+    <div class="card">
+      <h2 class="card-title">Parking session</h2>
+
+      <div class="countdown" id="countdown-box">
+        <p class="countdown-label">Time remaining</p>
+        <div class="countdown-grid">
+          <div class="countdown-stat">
+            <span id="c-hours">0</span>
+            <small>hours</small>
+          </div>
+          <div class="countdown-stat">
+            <span id="c-minutes">00</span>
+            <small>minutes</small>
+          </div>
+          <div class="countdown-stat">
+            <span id="c-seconds">00</span>
+            <small>seconds</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-edge" aria-hidden="true"></div>
+
+      <ul class="detail-list">
+        <li class="detail-row">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>
+          </span>
+          <span class="detail-text">
+            <strong id="d-location-id"></strong>
+            <small id="d-location-name"></small>
+          </span>
+        </li>
+        <li class="detail-row">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11m-14 0h14m-14 0a2 2 0 0 0-2 2v4h2m14-6a2 2 0 0 1 2 2v4h-2m-14 0v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2m10 0v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2m-14 0h14" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="detail-text">
+            <strong id="d-plate"></strong>
+            <small id="d-vehicle"></small>
+          </span>
+        </li>
+        <li class="detail-row">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          <span class="detail-text">
+            <strong id="d-expires"></strong>
+            <small id="d-duration"></small>
+          </span>
+        </li>
+      </ul>
+
+      <div class="reminder-card">
+        <div class="reminder-text">
+          <strong>Expiry reminders</strong>
+          <small>Get a notification before your session expires. Requires notification permission.</small>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="reminder-toggle" />
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+
+      <p class="fineprint" id="permission-note"></p>
+
+      <div id="extend-panel" class="extend-panel" hidden>
+        <p class="extend-label">Add time</p>
+        <div class="chip-row">
+          <button type="button" class="chip" data-add="15">+15m</button>
+          <button type="button" class="chip" data-add="30">+30m</button>
+          <button type="button" class="chip" data-add="60">+1h</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <button id="btn-extend" class="btn-primary">Extend</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
