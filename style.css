@@ -257,6 +257,10 @@ body{
   font-size: 12px;
   line-height: 1.5;
 }
+.fineprint-link{
+  color: var(--green);
+  text-decoration: underline;
+}
 
 /* ---------- Extend panel ---------- */
 .extend-panel{ margin-top: 20px; }
