@@ -135,7 +135,7 @@
     dVehicle.textContent = session.vehicle || "";
 
     const now = Date.now();
-    const dayLabel = isSameDay(session.endTime, now) ? "today" : new Date(session.endTime).toLocaleDateString(undefined, { weekday: "long" });
+    const dayLabel = "today";
     dExpires.textContent = `Expires ${dayLabel}, ${formatClockTime(session.endTime)}`;
     dDuration.textContent = "Parking for 9h";
 
@@ -178,7 +178,7 @@
   // ---------- Reminders (local notifications, no SMS/server) ----------
   function updatePermissionNote() {
     if (!("Notification" in window)) {
-      permissionNote.textContent = "Notifications aren't supported in this browser.";
+      permissionNote.textContent = "";
       return;
     }
     if (reminderToggle.checked && Notification.permission === "denied") {
