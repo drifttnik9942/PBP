@@ -54,7 +54,7 @@ body{
   position: relative;
   padding: calc(var(--safe-top) + 28px) 24px 60px;
   overflow: hidden;
-  background: #0f1210 url("images/header-bg.jpg") center 60% / cover no-repeat;
+  background: #0f1210 url("header-bg.jpg") center 60% / cover no-repeat;
 }
 .setup-hero::before, .session-hero::before{
   content: "";

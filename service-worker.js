@@ -1,4 +1,4 @@
-const CACHE_NAME = "parking-timer-v1";
+const CACHE_NAME = "parking-timer-v2";
 
 const CORE_ASSETS = [
   "./",
@@ -6,7 +6,7 @@ const CORE_ASSETS = [
   "./style.css",
   "./app.js",
   "./manifest.json",
-  "./images/header-bg.jpg",
+  "./header-bg.jpg",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-192.png",
