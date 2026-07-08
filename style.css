@@ -321,7 +321,7 @@ body{
   color: var(--text-muted);
   font-weight: 600;
 }
-.field input[type="text"], .field input[type="number"]{
+.field input[type="text"], .field input[type="number"], .field input[type="time"]{
   background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -329,6 +329,7 @@ body{
   color: var(--text);
   font-size: 16px;
   font-family: var(--font-body);
+  color-scheme: dark;
 }
 .field input::placeholder{ color: #5c635b; }
 #f-duration-custom{ margin-top: 10px; }

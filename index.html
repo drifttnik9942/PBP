@@ -33,35 +33,28 @@
     <form id="setup-form" class="setup-form">
       <label class="field">
         <span>Lot name</span>
-        <input type="text" id="f-location-name" placeholder="e.g. Imperial Parking" required maxlength="40" />
+        <input type="text" id="f-location-name" placeholder="e.g. Imperial Parking" value="Imperial Parking" required maxlength="40" />
       </label>
 
       <label class="field">
         <span>Lot / spot number</span>
-        <input type="text" id="f-location-id" placeholder="e.g. 28650" required maxlength="20" />
+        <input type="text" id="f-location-id" placeholder="e.g. 28650" value="28650" required maxlength="20" />
       </label>
 
       <label class="field">
         <span>License plate</span>
-        <input type="text" id="f-plate" placeholder="e.g. BTN4OF" required maxlength="12" style="text-transform:uppercase" />
+        <input type="text" id="f-plate" placeholder="e.g. BTN23G" value="BTN23G" required maxlength="12" style="text-transform:uppercase" />
       </label>
 
       <label class="field">
         <span>Vehicle (optional)</span>
-        <input type="text" id="f-vehicle" placeholder="e.g. white tacoma" maxlength="30" />
+        <input type="text" id="f-vehicle" placeholder="e.g. white tacoma" value="White Tacoma" maxlength="30" />
       </label>
 
-      <div class="field">
-        <span>Duration</span>
-        <div class="chip-row" id="duration-chips">
-          <button type="button" class="chip" data-mins="15">15m</button>
-          <button type="button" class="chip" data-mins="30">30m</button>
-          <button type="button" class="chip is-selected" data-mins="60">1h</button>
-          <button type="button" class="chip" data-mins="120">2h</button>
-          <button type="button" class="chip" data-mins="240">4h</button>
-        </div>
-        <input type="number" id="f-duration-custom" min="1" max="1440" placeholder="Custom minutes" />
-      </div>
+      <label class="field">
+        <span>Ends at</span>
+        <input type="time" id="f-end-time" value="15:40" required />
+      </label>
 
       <button type="submit" class="btn-primary">Start session</button>
     </form>

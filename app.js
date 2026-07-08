@@ -7,8 +7,7 @@
   const setupScreen = document.getElementById("setup-screen");
   const sessionScreen = document.getElementById("session-screen");
   const setupForm = document.getElementById("setup-form");
-  const durationChips = document.getElementById("duration-chips");
-  const customDurationInput = document.getElementById("f-duration-custom");
+  const endTimeInput = document.getElementById("f-end-time");
 
   const sessionTitle = document.getElementById("session-title");
   const countdownBox = document.getElementById("countdown-box");
@@ -30,7 +29,6 @@
   const btnExtend = document.getElementById("btn-extend");
   const extendPanel = document.getElementById("extend-panel");
 
-  let selectedDuration = 60;
   let tickHandle = null;
   let reminderTimeoutHandle = null;
 
@@ -91,23 +89,6 @@
     setupScreen.classList.remove("active");
   }
 
-  // ---------- Duration chip selection ----------
-  durationChips.addEventListener("click", (e) => {
-    const btn = e.target.closest(".chip");
-    if (!btn) return;
-    [...durationChips.children].forEach((c) => c.classList.remove("is-selected"));
-    btn.classList.add("is-selected");
-    selectedDuration = Number(btn.dataset.mins);
-    customDurationInput.value = "";
-  });
-
-  customDurationInput.addEventListener("input", () => {
-    if (customDurationInput.value) {
-      [...durationChips.children].forEach((c) => c.classList.remove("is-selected"));
-      selectedDuration = Number(customDurationInput.value);
-    }
-  });
-
   // ---------- Start session ----------
   setupForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -115,10 +96,11 @@
     const locationId = document.getElementById("f-location-id").value.trim();
     const plate = document.getElementById("f-plate").value.trim().toUpperCase();
     const vehicle = document.getElementById("f-vehicle").value.trim();
-    const custom = Number(customDurationInput.value);
-    const durationMinutes = custom > 0 ? custom : selectedDuration;
 
     const now = Date.now();
+    const endTime = computeEndTime(endTimeInput.value, now);
+    const durationMinutes = Math.max(1, Math.round((endTime - now) / 60000));
+
     const session = {
       locationName,
       locationId,
@@ -126,14 +108,27 @@
       vehicle,
       durationMinutes,
       startTime: now,
-      endTime: now + durationMinutes * 60 * 1000,
+      endTime,
       remindersOn: false,
     };
     saveSession(session);
     setupForm.reset();
+    endTimeInput.value = "15:40";
     renderSession(session);
     showSession();
   });
+
+  // Given a "HH:MM" time-of-day string, returns the next timestamp matching
+  // that time (today if it's still ahead, otherwise tomorrow).
+  function computeEndTime(timeStr, now) {
+    const [h, m] = timeStr.split(":").map(Number);
+    const end = new Date(now);
+    end.setHours(h, m, 0, 0);
+    if (end.getTime() <= now) {
+      end.setDate(end.getDate() + 1);
+    }
+    return end.getTime();
+  }
 
   // ---------- Render session details ----------
   function renderSession(session) {
