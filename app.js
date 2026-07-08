@@ -118,15 +118,11 @@
     showSession();
   });
 
-  // Given a "HH:MM" time-of-day string, returns the next timestamp matching
-  // that time (today if it's still ahead, otherwise tomorrow).
+  // Given a "HH:MM" time-of-day string, returns today's timestamp at that time.
   function computeEndTime(timeStr, now) {
     const [h, m] = timeStr.split(":").map(Number);
     const end = new Date(now);
     end.setHours(h, m, 0, 0);
-    if (end.getTime() <= now) {
-      end.setDate(end.getDate() + 1);
-    }
     return end.getTime();
   }
 
