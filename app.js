@@ -137,7 +137,7 @@
     const now = Date.now();
     const dayLabel = isSameDay(session.endTime, now) ? "today" : new Date(session.endTime).toLocaleDateString(undefined, { weekday: "long" });
     dExpires.textContent = `Expires ${dayLabel}, ${formatClockTime(session.endTime)}`;
-    dDuration.textContent = formatDuration(session.durationMinutes);
+    dDuration.textContent = "Parking for 9h";
 
     reminderToggle.checked = !!session.remindersOn;
     updatePermissionNote();
