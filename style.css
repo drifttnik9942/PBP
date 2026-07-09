@@ -130,7 +130,7 @@ body{
 
 /* ---------- Countdown ---------- */
 .countdown{
-  background: #0c0e0c;
+  background: #141515;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: 20px 16px;
