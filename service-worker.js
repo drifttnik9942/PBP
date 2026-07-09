@@ -1,4 +1,4 @@
-const CACHE_NAME = "parking-timer-v6";
+const CACHE_NAME = "parking-timer-v7";
 
 const CORE_ASSETS = [
   "./",
