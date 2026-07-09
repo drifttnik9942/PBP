@@ -149,7 +149,7 @@ body{
 }
 .countdown-stat span{
   display: block;
-  font-family: var(--font-mono);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 40px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
