@@ -8,6 +8,11 @@
   const sessionScreen = document.getElementById("session-screen");
   const setupForm = document.getElementById("setup-form");
   const endTimeInput = document.getElementById("f-end-time");
+  const vehiclePresetSelect = document.getElementById("f-vehicle-preset");
+  const locationNameInput = document.getElementById("f-location-name");
+  const locationIdInput = document.getElementById("f-location-id");
+  const plateInput = document.getElementById("f-plate");
+  const vehicleInput = document.getElementById("f-vehicle");
 
   const sessionTitle = document.getElementById("session-title");
   const countdownBox = document.getElementById("countdown-box");
@@ -88,6 +93,41 @@
     sessionScreen.classList.add("active");
     setupScreen.classList.remove("active");
   }
+
+  // ---------- Vehicle presets ----------
+  const VEHICLE_PRESETS = {
+    tacoma: {
+      locationName: "Imperial Parking",
+      locationId: "28650",
+      plate: "BTN23G",
+      vehicle: "White Toyota Tacoma 2013",
+    },
+    impreza: {
+      locationName: "Imperial Parking",
+      locationId: "28650",
+      plate: "AJL31H",
+      vehicle: "Gray Subaru Impreza 2019",
+    },
+    sportage: {
+      locationName: "Imperial Parking",
+      locationId: "28650",
+      plate: "CCYE378",
+      vehicle: "Black Kia Sportage 2024",
+    },
+  };
+
+  function applyVehiclePreset(key) {
+    const preset = VEHICLE_PRESETS[key];
+    if (!preset) return;
+    locationNameInput.value = preset.locationName;
+    locationIdInput.value = preset.locationId;
+    plateInput.value = preset.plate;
+    vehicleInput.value = preset.vehicle;
+  }
+
+  vehiclePresetSelect.addEventListener("change", () => {
+    applyVehiclePreset(vehiclePresetSelect.value);
+  });
 
   // ---------- Start session ----------
   setupForm.addEventListener("submit", (e) => {
@@ -262,6 +302,7 @@
 
   // ---------- Boot ----------
   function boot() {
+    applyVehiclePreset(vehiclePresetSelect.value);
     const existing = loadSession();
     if (existing) {
       renderSession(existing);
