@@ -60,9 +60,9 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: 340px;
+  aspect-ratio: 1200 / 611;
   padding-top: calc(var(--safe-top) + 14px);
-  padding-bottom: 36px;
+  padding-bottom: 18px;
 }
 .setup-hero::before, .session-hero::before{
   content: "";
@@ -118,7 +118,7 @@ body{
 .card{
   position: relative;
   z-index: 1;
-  margin-top: -24px;
+  margin-top: 0;
   background: var(--panel);
   border-radius: 0;
   padding: 28px 20px 120px;
