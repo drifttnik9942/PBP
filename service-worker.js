@@ -1,4 +1,4 @@
-const CACHE_NAME = "parking-timer-v7";
+const CACHE_NAME = "parking-timer-v8";
 
 const CORE_ASSETS = [
   "./",
@@ -7,10 +7,10 @@ const CORE_ASSETS = [
   "./app.js",
   "./manifest.json",
   "./header-bg.png",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-192.png",
-  "./icons/icon-maskable-512.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-maskable-192.png",
+  "./icon-maskable-512.png",
 ];
 
 self.addEventListener("install", (event) => {
