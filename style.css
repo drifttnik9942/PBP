@@ -96,14 +96,13 @@ body{
   align-self: flex-start;
   width: 46px;
   height: 46px;
-  border-radius: 14px;
+  border-radius: 8px;
   border: none;
-  background: rgba(0,0,0,0.8);
+  background: #000000;
   color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(6px);
   margin-bottom: 12px;
 }
 .session-hero h1{
