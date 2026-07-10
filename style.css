@@ -163,22 +163,15 @@ body{
 }
 .countdown.is-expiring span{ color: var(--red); }
 
-/* torn ticket edge */
+/* torn ticket edge removed per design update */
 .ticket-edge{
-  height: 14px;
-  margin: 18px -20px 6px;
-  background:
-    radial-gradient(circle at 10px 0, transparent 7px, var(--panel) 7.5px) top left,
-    radial-gradient(circle at 10px 14px, var(--panel) 7px, transparent 7.5px) bottom left;
-  background-size: 20px 14px;
-  background-repeat: repeat-x;
-  border-top: 1px dashed var(--line);
+  display: none;
 }
 
 /* ---------- Detail list ---------- */
 .detail-list{
   list-style: none;
-  margin: 6px 0 0;
+  margin: 18px 0 0;
   padding: 0;
 }
 .detail-row{
