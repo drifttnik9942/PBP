@@ -182,13 +182,22 @@ body{
   padding: 0;
 }
 .detail-row{
+  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 16px 0;
-  border-bottom: 1px solid var(--line);
 }
-.detail-row:last-child{ border-bottom: none; }
+.detail-row::after{
+  content: "";
+  position: absolute;
+  left: 54px; /* icon width (40px) + row gap (14px) = aligns with text start */
+  right: -20px; /* bleed past the card's horizontal padding, off the edge */
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+}
+.detail-row:last-child::after{ display: none; }
 .icon-badge{
   flex: none;
   width: 40px;
