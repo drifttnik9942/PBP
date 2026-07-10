@@ -114,6 +114,18 @@
       plate: "CCYE378",
       vehicle: "Black Kia Sportage 2024",
     },
+    crv: {
+      locationName: "Imperial Parking",
+      locationId: "28650",
+      plate: "K23PEV",
+      vehicle: "Gray Honda CR-V Touring AWD",
+    },
+    mustang: {
+      locationName: "Imperial Parking",
+      locationId: "28650",
+      plate: "XXXXX",
+      vehicle: "Black Ford Mustang",
+    },
   };
 
   function applyVehiclePreset(key) {
