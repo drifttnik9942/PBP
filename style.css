@@ -2,7 +2,7 @@
   --bg: #0f1210;
   --panel: #282b29;
   --panel-2: #333534;
-  --line: #2a2f2a;
+  --line: #424444;
   --text: #eef1ec;
   --text-muted: #c6c8c8;
   --green: #7ed957;
@@ -187,7 +187,7 @@ body{
   left: 54px; /* icon width (40px) + row gap (14px) = aligns with text start */
   right: -20px; /* bleed past the card's horizontal padding, off the edge */
   bottom: 0;
-  height: 1px;
+  height: 1.5px;
   background: var(--line);
 }
 .detail-row:last-child::after{ display: none; }
