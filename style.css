@@ -94,8 +94,8 @@ body{
 
 .btn-close{
   align-self: flex-start;
-  width: 46px;
-  height: 46px;
+  width: 47px;
+  height: 47px;
   border-radius: 8px;
   border: none;
   background: #000000;
@@ -104,7 +104,7 @@ body{
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
-  margin-left: -10px;
+  margin-left: -11px;
 }
 .session-hero h1{
   margin: 0 0 0 -10px;
