@@ -106,9 +106,9 @@ body{
   margin-bottom: 12px;
 }
 .session-hero h1{
-  margin: 0 0 0 6px;
+  margin: 1px 0 0 6px;
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
