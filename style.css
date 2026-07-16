@@ -5,7 +5,7 @@
   --line: #424444;
   --text: #eef1ec;
   --text-muted: #c6c8c8;
-  --green: #7ed957;
+  --green: #54ca25;
   --green-deep: #3d7a2e;
   --red: #ff6b5c;
   --radius-lg: 28px;
@@ -314,7 +314,7 @@ body{
   background: var(--green);
   color: #0f1210;
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: -0.01em;
 }
 .btn-primary:active{ transform: scale(0.98); }
