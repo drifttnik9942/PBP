@@ -227,29 +227,15 @@
     tickHandle = setInterval(tick, 1000);
   }
 
-  // ---------- Reminders (local notifications, no SMS/server) ----------
+  // ---------- Reminders (toggle kept in UI; notifications disabled) ----------
   function updatePermissionNote() {
-    if (!("Notification" in window)) {
-      permissionNote.textContent = "";
-      return;
-    }
-    if (reminderToggle.checked && Notification.permission === "denied") {
-      permissionNote.textContent = "Notifications are blocked for this site in your browser settings.";
-    } else {
-      permissionNote.textContent = "";
-    }
+    permissionNote.textContent = "";
   }
 
-  reminderToggle.addEventListener("change", async () => {
+  reminderToggle.addEventListener("change", () => {
     const session = loadSession();
     if (!session) return;
 
-    if (reminderToggle.checked && "Notification" in window) {
-      const perm = await Notification.requestPermission();
-      if (perm !== "granted") {
-        reminderToggle.checked = false;
-      }
-    }
     session.remindersOn = reminderToggle.checked;
     saveSession(session);
     updatePermissionNote();
@@ -257,31 +243,13 @@
   });
 
   function scheduleReminder(session) {
+    // Notifications are disabled; toggle state is still saved above, but no
+    // browser/phone notification is requested or fired.
     if (reminderTimeoutHandle) clearTimeout(reminderTimeoutHandle);
-    if (!session.remindersOn) return;
-    if (!("Notification" in window) || Notification.permission !== "granted") return;
-
-    const REMINDER_LEAD_MS = 5 * 60 * 1000; // 5 minutes before expiry
-    const fireAt = session.endTime - REMINDER_LEAD_MS;
-    const delay = fireAt - Date.now();
-
-    if (delay <= 0) return; // too late for a lead-time reminder
-
-    reminderTimeoutHandle = setTimeout(() => {
-      new Notification("Parking expiring soon", {
-        body: `${session.locationName || "Your session"} expires at ${formatClockTime(session.endTime)}.`,
-        icon: "icons/icon-192.png",
-      });
-    }, delay);
   }
 
   function notifyExpired() {
-    if ("Notification" in window && Notification.permission === "granted") {
-      new Notification("Parking session expired", {
-        body: "Your parking session has ended.",
-        icon: "icons/icon-192.png",
-      });
-    }
+    // Notifications are disabled; intentionally a no-op.
   }
 
   // ---------- Extend ----------
