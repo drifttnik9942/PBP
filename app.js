@@ -45,8 +45,7 @@
   const btnConfirmEndTime = document.getElementById("btn-confirm-end-time");
 
   const WHEEL_ITEM_HEIGHT = 44;
-  const WHEEL_VISIBLE_ROWS = 5; // must match .wheel-picker / .wheel-col height (220px)
-  const WHEEL_PAD_ROWS = Math.floor(WHEEL_VISIBLE_ROWS / 2);
+  const WHEEL_VISIBLE_ROWS = 8; // total container height in row-units (7 full rows + a half-row sliver top & bottom); must match .wheel-picker / .wheel-col height (352px)
 
   let tickHandle = null;
   let reminderTimeoutHandle = null;
@@ -304,10 +303,17 @@
     container.scrollTop = index * WHEEL_ITEM_HEIGHT;
   }
 
-  function highlightWheelSelection(container) {
-    const selectedIndex = getWheelSelectedIndex(container);
+  function applyWheelVisuals(container) {
+    const rawIndex = container.scrollTop / WHEEL_ITEM_HEIGHT;
+    const selectedIndex = Math.round(rawIndex);
     container.querySelectorAll(".wheel-item").forEach((el) => {
-      el.classList.toggle("is-selected", Number(el.dataset.index) === selectedIndex);
+      const i = Number(el.dataset.index);
+      const delta = i - rawIndex;
+      const angle = Math.max(-72, Math.min(72, delta * 24)); // curves like a rotating wheel
+      const opacity = Math.max(0.16, 1 - Math.min(1, Math.abs(delta) * 0.32));
+      el.style.transform = `rotateX(${angle}deg)`;
+      el.style.opacity = String(opacity);
+      el.classList.toggle("is-selected", i === selectedIndex);
     });
   }
 
@@ -351,16 +357,14 @@
     btnConfirmEndTime.classList.toggle("is-active", isActive);
   }
 
-  function onWheelScroll(container) {
-    highlightWheelSelection(container);
-    updateConfirmButtonState();
-  }
-
   [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach((col) => {
     let scrollTimeout = null;
     col.addEventListener("scroll", () => {
+      // Live, every-frame update so the curvature tracks the finger/drag smoothly.
+      applyWheelVisuals(col);
+      // Heavier check (reads storage) only once scrolling settles.
       if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => onWheelScroll(col), 80);
+      scrollTimeout = setTimeout(updateConfirmButtonState, 80);
     });
   });
 
@@ -408,7 +412,7 @@
     setWheelSelectedIndex(wheelMinuteEl, minuteMiddleRepeat * MINUTE_BASE.length + MINUTE_BASE.indexOf(endDate.getMinutes()));
     setWheelSelectedIndex(wheelAmpmEl, sheetAmpmItems.indexOf(ampm));
 
-    [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach(highlightWheelSelection);
+    [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach(applyWheelVisuals);
     updateConfirmButtonState();
   }
 

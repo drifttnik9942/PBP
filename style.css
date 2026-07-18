@@ -344,10 +344,10 @@ body{
 .wheel-picker{
   position: relative;
   display: flex;
-  height: 220px;
+  height: 352px;
   margin-bottom: 20px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 75%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
 }
 .wheel-highlight{
   position: absolute;
@@ -365,15 +365,16 @@ body{
   position: relative;
   z-index: 3;
   flex: 1;
-  height: 220px;
+  height: 352px;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  perspective: 700px;
 }
 .wheel-col::-webkit-scrollbar{ display: none; }
 .wheel-col-date{ flex: 1.6; }
-.wheel-pad{ height: 88px; flex-shrink: 0; }
+.wheel-pad{ height: 154px; flex-shrink: 0; }
 .wheel-item{
   height: 44px;
   display: flex;
@@ -383,14 +384,14 @@ body{
   color: var(--text-muted);
   font-size: 19px;
   font-weight: 600;
-  opacity: 0.4;
-  transition: color .15s, opacity .15s;
   white-space: nowrap;
+  transform-origin: center;
+  will-change: transform, opacity;
+  transition: color 0.12s;
 }
 .wheel-col-date .wheel-item{ font-size: 17px; }
 .wheel-item.is-selected{
   color: var(--text);
-  opacity: 1;
 }
 
 /* ---------- Bottom bar / buttons ---------- */
