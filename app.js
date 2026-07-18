@@ -161,7 +161,7 @@
       durationMinutes,
       startTime: now,
       endTime,
-      remindersOn: false,
+      remindersOn: true,
     };
     saveSession(session);
     setupForm.reset();
