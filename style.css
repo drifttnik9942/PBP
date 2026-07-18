@@ -270,30 +270,111 @@ body{
   text-decoration: underline;
 }
 
-/* ---------- Extend panel ---------- */
-.extend-panel{ margin-top: 20px; }
-.extend-label{ margin: 0 0 10px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
-
-/* ---------- Chips ---------- */
-.chip-row{
+/* ---------- Set end time sheet ---------- */
+.sheet-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 50;
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
+  align-items: flex-end;
+  justify-content: center;
 }
-.chip{
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: transparent;
+.sheet-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+.sheet-panel{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg);
+  border-radius: 24px 24px 0 0;
+  padding: 10px 20px calc(20px + var(--safe-bottom));
+}
+.sheet-handle{
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  margin: 6px auto 18px;
+}
+.sheet-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.sheet-header h3{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.sheet-close{
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--panel-2);
   color: var(--text);
-  font-size: 14px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.chip.is-selected{
-  background: var(--green);
-  border-color: var(--green);
-  color: #0f1210;
+
+/* ---------- Wheel picker ---------- */
+.wheel-picker{
+  position: relative;
+  display: flex;
+  height: 220px;
+  margin-bottom: 20px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 75%, transparent 100%);
+}
+.wheel-highlight{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 44px;
+  background: var(--panel);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 2;
+}
+.wheel-col{
+  position: relative;
+  flex: 1;
+  height: 220px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.wheel-col::-webkit-scrollbar{ display: none; }
+.wheel-col-date{ flex: 1.6; }
+.wheel-pad{ height: 88px; flex-shrink: 0; }
+.wheel-item{
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  color: var(--text-muted);
+  font-size: 19px;
+  font-weight: 600;
+  opacity: 0.4;
+  transition: color .15s, opacity .15s;
+  white-space: nowrap;
+}
+.wheel-col-date .wheel-item{ font-size: 17px; }
+.wheel-item.is-selected{
+  color: var(--text);
+  opacity: 1;
 }
 
 /* ---------- Bottom bar / buttons ---------- */
@@ -318,6 +399,17 @@ body{
   letter-spacing: -0.01em;
 }
 .btn-primary:active{ transform: scale(0.98); }
+.btn-confirm{
+  background: var(--panel-2);
+  color: var(--text-muted);
+}
+.btn-confirm.is-active{
+  background: var(--green);
+  color: #0f1210;
+}
+.btn-confirm:disabled{
+  opacity: 1;
+}
 
 /* ---------- Setup form ---------- */
 .setup-form{

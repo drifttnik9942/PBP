@@ -32,7 +32,19 @@
 
   const btnClose = document.getElementById("btn-close");
   const btnExtend = document.getElementById("btn-extend");
-  const extendPanel = document.getElementById("extend-panel");
+
+  const endTimeSheet = document.getElementById("end-time-sheet");
+  const sheetBackdrop = document.getElementById("sheet-backdrop");
+  const btnSheetClose = document.getElementById("btn-sheet-close");
+  const wheelDateEl = document.getElementById("wheel-date");
+  const wheelHourEl = document.getElementById("wheel-hour");
+  const wheelMinuteEl = document.getElementById("wheel-minute");
+  const wheelAmpmEl = document.getElementById("wheel-ampm");
+  const btnConfirmEndTime = document.getElementById("btn-confirm-end-time");
+
+  const WHEEL_ITEM_HEIGHT = 44;
+  const WHEEL_VISIBLE_ROWS = 5; // must match .wheel-picker / .wheel-col height (220px)
+  const WHEEL_PAD_ROWS = Math.floor(WHEEL_VISIBLE_ROWS / 2);
 
   let tickHandle = null;
   let reminderTimeoutHandle = null;
@@ -255,22 +267,148 @@
     // Notifications are disabled; intentionally a no-op.
   }
 
-  // ---------- Extend ----------
-  btnExtend.addEventListener("click", () => {
-    extendPanel.hidden = !extendPanel.hidden;
+  // ---------- Set end time sheet ----------
+  function formatDateLabel(d) {
+    const weekday = d.toLocaleDateString(undefined, { weekday: "short" });
+    const month = d.toLocaleDateString(undefined, { month: "short" });
+    return `${weekday}, ${month} ${d.getDate()}`;
+  }
+
+  function buildWheelColumn(container, items, renderLabel) {
+    container.innerHTML = "";
+    const topPad = document.createElement("div");
+    topPad.className = "wheel-pad";
+    container.appendChild(topPad);
+
+    items.forEach((item, i) => {
+      const el = document.createElement("div");
+      el.className = "wheel-item";
+      el.dataset.index = String(i);
+      el.textContent = renderLabel(item);
+      container.appendChild(el);
+    });
+
+    const bottomPad = document.createElement("div");
+    bottomPad.className = "wheel-pad";
+    container.appendChild(bottomPad);
+  }
+
+  function getWheelSelectedIndex(container) {
+    const raw = container.scrollTop / WHEEL_ITEM_HEIGHT;
+    return Math.max(0, Math.min(container.children.length - 3, Math.round(raw)));
+  }
+
+  function setWheelSelectedIndex(container, index) {
+    container.scrollTop = index * WHEEL_ITEM_HEIGHT;
+  }
+
+  function highlightWheelSelection(container) {
+    const selectedIndex = getWheelSelectedIndex(container);
+    container.querySelectorAll(".wheel-item").forEach((el) => {
+      el.classList.toggle("is-selected", Number(el.dataset.index) === selectedIndex);
+    });
+  }
+
+  let sheetDateItems = [];
+  const sheetHourItems = Array.from({ length: 12 }, (_, i) => i + 1); // 1-12
+  const sheetMinuteItems = Array.from({ length: 60 }, (_, i) => i); // 0-59
+  const sheetAmpmItems = ["AM", "PM"];
+
+  function getWheelSelection() {
+    const dateItem = sheetDateItems[getWheelSelectedIndex(wheelDateEl)];
+    const hour12 = sheetHourItems[getWheelSelectedIndex(wheelHourEl)];
+    const minute = sheetMinuteItems[getWheelSelectedIndex(wheelMinuteEl)];
+    const ampm = sheetAmpmItems[getWheelSelectedIndex(wheelAmpmEl)];
+    if (!dateItem) return null;
+
+    let hour24 = hour12 % 12;
+    if (ampm === "PM") hour24 += 12;
+
+    const d = new Date(dateItem.year, dateItem.month, dateItem.date, hour24, minute, 0, 0);
+    return d.getTime();
+  }
+
+  function updateConfirmButtonState() {
+    const session = loadSession();
+    const candidate = getWheelSelection();
+    const isActive = !!session && candidate != null && candidate > session.endTime;
+    btnConfirmEndTime.disabled = !isActive;
+    btnConfirmEndTime.classList.toggle("is-active", isActive);
+  }
+
+  function onWheelScroll(container) {
+    highlightWheelSelection(container);
+    updateConfirmButtonState();
+  }
+
+  [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach((col) => {
+    let scrollTimeout = null;
+    col.addEventListener("scroll", () => {
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => onWheelScroll(col), 80);
+    });
   });
 
-  extendPanel.addEventListener("click", (e) => {
-    const btn = e.target.closest(".chip[data-add]");
-    if (!btn) return;
+  function openEndTimeSheet() {
     const session = loadSession();
     if (!session) return;
-    const addMinutes = Number(btn.dataset.add);
-    session.endTime += addMinutes * 60 * 1000;
-    session.durationMinutes += addMinutes;
+
+    const endDate = new Date(session.endTime);
+
+    // Build the date column: today plus the next 13 days.
+    sheetDateItems = [];
+    const base = new Date();
+    base.setHours(0, 0, 0, 0);
+    for (let i = 0; i < 14; i++) {
+      const d = new Date(base);
+      d.setDate(base.getDate() + i);
+      sheetDateItems.push({ year: d.getFullYear(), month: d.getMonth(), date: d.getDate(), label: formatDateLabel(d) });
+    }
+    buildWheelColumn(wheelDateEl, sheetDateItems, (item) => item.label);
+    buildWheelColumn(wheelHourEl, sheetHourItems, (h) => pad(h));
+    buildWheelColumn(wheelMinuteEl, sheetMinuteItems, (m) => pad(m));
+    buildWheelColumn(wheelAmpmEl, sheetAmpmItems, (v) => v);
+
+    // Position wheels to match the current end time.
+    const dateIndex = sheetDateItems.findIndex(
+      (item) => item.year === endDate.getFullYear() && item.month === endDate.getMonth() && item.date === endDate.getDate()
+    );
+    let hour24 = endDate.getHours();
+    const ampm = hour24 >= 12 ? "PM" : "AM";
+    let hour12 = hour24 % 12;
+    if (hour12 === 0) hour12 = 12;
+
+    setWheelSelectedIndex(wheelDateEl, Math.max(0, dateIndex));
+    setWheelSelectedIndex(wheelHourEl, sheetHourItems.indexOf(hour12));
+    setWheelSelectedIndex(wheelMinuteEl, endDate.getMinutes());
+    setWheelSelectedIndex(wheelAmpmEl, sheetAmpmItems.indexOf(ampm));
+
+    [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach(highlightWheelSelection);
+    updateConfirmButtonState();
+
+    endTimeSheet.hidden = false;
+  }
+
+  function closeEndTimeSheet() {
+    endTimeSheet.hidden = true;
+  }
+
+  btnExtend.addEventListener("click", openEndTimeSheet);
+  btnSheetClose.addEventListener("click", closeEndTimeSheet);
+  sheetBackdrop.addEventListener("click", closeEndTimeSheet);
+
+  btnConfirmEndTime.addEventListener("click", () => {
+    if (btnConfirmEndTime.disabled) return;
+    const session = loadSession();
+    if (!session) return;
+    const candidate = getWheelSelection();
+    if (candidate == null || candidate <= session.endTime) return;
+
+    session.endTime = candidate;
+    session.durationMinutes = Math.max(1, Math.round((candidate - session.startTime) / 60000));
     saveSession(session);
     renderSession(session);
-    extendPanel.hidden = true;
+    closeEndTimeSheet();
   });
 
   // ---------- Close / end session ----------

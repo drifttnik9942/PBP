@@ -150,20 +150,36 @@
       <p class="fineprint" id="permission-note"></p>
       <p class="fineprint">SMS fees may apply. <a href="#" class="fineprint-link">Learn more</a></p>
 
-      <div id="extend-panel" class="extend-panel" hidden>
-        <p class="extend-label">Add time</p>
-        <div class="chip-row">
-          <button type="button" class="chip" data-add="15">+15m</button>
-          <button type="button" class="chip" data-add="30">+30m</button>
-          <button type="button" class="chip" data-add="60">+1h</button>
-        </div>
-      </div>
     </div>
 
     <div class="bottom-bar">
       <button id="btn-extend" class="btn-primary">Extend</button>
     </div>
   </section>
+
+  <!-- ============ SET END TIME SHEET ============ -->
+  <div id="end-time-sheet" class="sheet-overlay" hidden>
+    <div class="sheet-backdrop" id="sheet-backdrop"></div>
+    <div class="sheet-panel">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Set parking end time</h3>
+        <button id="btn-sheet-close" class="sheet-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="wheel-picker">
+        <div class="wheel-highlight" aria-hidden="true"></div>
+        <div class="wheel-col wheel-col-date" id="wheel-date"></div>
+        <div class="wheel-col wheel-col-hour" id="wheel-hour"></div>
+        <div class="wheel-col wheel-col-minute" id="wheel-minute"></div>
+        <div class="wheel-col wheel-col-ampm" id="wheel-ampm"></div>
+      </div>
+
+      <button id="btn-confirm-end-time" class="btn-primary btn-confirm" disabled>Confirm end time</button>
+    </div>
+  </div>
 
 </div>
 
