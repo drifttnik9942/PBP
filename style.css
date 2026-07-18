@@ -292,6 +292,7 @@ body{
   z-index: 1;
   width: 100%;
   max-width: 480px;
+  max-height: 62vh;
   background: var(--bg);
   border-radius: 24px 24px 0 0;
   padding: 10px 20px calc(20px + var(--safe-bottom));
@@ -344,10 +345,10 @@ body{
 .wheel-picker{
   position: relative;
   display: flex;
-  height: 352px;
+  height: 220px;
   margin-bottom: 20px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
 }
 .wheel-highlight{
   position: absolute;
@@ -365,16 +366,16 @@ body{
   position: relative;
   z-index: 3;
   flex: 1;
-  height: 352px;
+  height: 220px;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  perspective: 700px;
+  perspective: 500px;
 }
 .wheel-col::-webkit-scrollbar{ display: none; }
 .wheel-col-date{ flex: 1.6; }
-.wheel-pad{ height: 154px; flex-shrink: 0; }
+.wheel-pad{ height: 88px; flex-shrink: 0; }
 .wheel-item{
   height: 44px;
   display: flex;
