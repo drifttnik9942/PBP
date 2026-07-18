@@ -279,6 +279,9 @@ body{
   align-items: flex-end;
   justify-content: center;
 }
+.sheet-overlay[hidden]{
+  display: none;
+}
 .sheet-backdrop{
   position: absolute;
   inset: 0;
