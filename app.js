@@ -405,7 +405,7 @@
 
   // Drag handle: tap to close, or swipe down to dismiss.
   (function setupHandleDrag() {
-    const DISMISS_THRESHOLD = 90; // px dragged down before it counts as a dismiss
+    const DISMISS_THRESHOLD = 70; // px dragged down before it counts as a dismiss
     let dragging = false;
     let startY = 0;
     let currentY = 0;
@@ -418,31 +418,34 @@
       currentY = 0;
       sheetPanel.style.transition = "none";
       sheetHandle.setPointerCapture(e.pointerId);
+      e.preventDefault();
     });
 
     sheetHandle.addEventListener("pointermove", (e) => {
       if (!dragging) return;
       currentY = Math.max(0, e.clientY - startY);
-      if (currentY > 4) moved = true;
+      if (currentY > 3) moved = true;
       sheetPanel.style.transform = `translateY(${currentY}px)`;
+      e.preventDefault();
     });
 
-    function endDrag() {
+    function endDrag(dismiss) {
       if (!dragging) return;
       dragging = false;
       sheetPanel.style.transition = "transform 0.25s ease";
-      if (currentY > DISMISS_THRESHOLD) {
+      if (dismiss) {
         closeEndTimeSheet();
       }
       sheetPanel.style.transform = "";
     }
 
-    sheetHandle.addEventListener("pointerup", () => {
+    sheetHandle.addEventListener("pointerup", (e) => {
       const wasTap = !moved;
-      endDrag();
-      if (wasTap) closeEndTimeSheet();
+      const shouldDismiss = wasTap || currentY > DISMISS_THRESHOLD;
+      endDrag(shouldDismiss);
+      e.preventDefault();
     });
-    sheetHandle.addEventListener("pointercancel", endDrag);
+    sheetHandle.addEventListener("pointercancel", () => endDrag(false));
   })();
 
   btnConfirmEndTime.addEventListener("click", () => {

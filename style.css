@@ -298,13 +298,22 @@ body{
   transition: transform 0.25s ease;
 }
 .sheet-handle{
+  position: relative;
+  width: 100%;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 14px;
+  cursor: grab;
+  touch-action: none;
+}
+.sheet-handle::before{
+  content: "";
   width: 36px;
   height: 4px;
   border-radius: 2px;
   background: var(--line);
-  margin: 6px auto 18px;
-  cursor: grab;
-  touch-action: none;
 }
 .sheet-header{
   display: flex;
@@ -354,6 +363,7 @@ body{
 }
 .wheel-col{
   position: relative;
+  z-index: 3;
   flex: 1;
   height: 220px;
   overflow-y: scroll;
