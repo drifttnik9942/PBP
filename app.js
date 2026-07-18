@@ -35,6 +35,8 @@
 
   const endTimeSheet = document.getElementById("end-time-sheet");
   const sheetBackdrop = document.getElementById("sheet-backdrop");
+  const sheetPanel = document.getElementById("sheet-panel");
+  const sheetHandle = document.getElementById("sheet-handle");
   const btnSheetClose = document.getElementById("btn-sheet-close");
   const wheelDateEl = document.getElementById("wheel-date");
   const wheelHourEl = document.getElementById("wheel-hour");
@@ -353,6 +355,12 @@
     const session = loadSession();
     if (!session) return;
 
+    // Show the sheet first so the wheel columns have real layout before we
+    // set their scrollTop — assigning scrollTop while display:none is a no-op.
+    sheetPanel.style.transition = "";
+    sheetPanel.style.transform = "";
+    endTimeSheet.hidden = false;
+
     const endDate = new Date(session.endTime);
 
     // Build the date column: today plus the next 13 days.
@@ -385,8 +393,6 @@
 
     [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach(highlightWheelSelection);
     updateConfirmButtonState();
-
-    endTimeSheet.hidden = false;
   }
 
   function closeEndTimeSheet() {
@@ -396,6 +402,48 @@
   btnExtend.addEventListener("click", openEndTimeSheet);
   btnSheetClose.addEventListener("click", closeEndTimeSheet);
   sheetBackdrop.addEventListener("click", closeEndTimeSheet);
+
+  // Drag handle: tap to close, or swipe down to dismiss.
+  (function setupHandleDrag() {
+    const DISMISS_THRESHOLD = 90; // px dragged down before it counts as a dismiss
+    let dragging = false;
+    let startY = 0;
+    let currentY = 0;
+    let moved = false;
+
+    sheetHandle.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      moved = false;
+      startY = e.clientY;
+      currentY = 0;
+      sheetPanel.style.transition = "none";
+      sheetHandle.setPointerCapture(e.pointerId);
+    });
+
+    sheetHandle.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      currentY = Math.max(0, e.clientY - startY);
+      if (currentY > 4) moved = true;
+      sheetPanel.style.transform = `translateY(${currentY}px)`;
+    });
+
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      sheetPanel.style.transition = "transform 0.25s ease";
+      if (currentY > DISMISS_THRESHOLD) {
+        closeEndTimeSheet();
+      }
+      sheetPanel.style.transform = "";
+    }
+
+    sheetHandle.addEventListener("pointerup", () => {
+      const wasTap = !moved;
+      endDrag();
+      if (wasTap) closeEndTimeSheet();
+    });
+    sheetHandle.addEventListener("pointercancel", endDrag);
+  })();
 
   btnConfirmEndTime.addEventListener("click", () => {
     if (btnConfirmEndTime.disabled) return;

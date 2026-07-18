@@ -295,6 +295,7 @@ body{
   background: var(--bg);
   border-radius: 24px 24px 0 0;
   padding: 10px 20px calc(20px + var(--safe-bottom));
+  transition: transform 0.25s ease;
 }
 .sheet-handle{
   width: 36px;
@@ -302,6 +303,8 @@ body{
   border-radius: 2px;
   background: var(--line);
   margin: 6px auto 18px;
+  cursor: grab;
+  touch-action: none;
 }
 .sheet-header{
   display: flex;
