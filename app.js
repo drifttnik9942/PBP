@@ -76,11 +76,11 @@
   }
 
   function formatDuration(mins) {
-    if (mins < 60) return `Parking for ${mins} mins`;
     const h = Math.floor(mins / 60);
     const m = mins % 60;
-    if (m === 0) return `Parking for ${h} hr${h > 1 ? "s" : ""}`;
-    return `Parking for ${h}h ${m}m`;
+    if (h === 0) return `Parking for ${m} min${m !== 1 ? "s" : ""}`;
+    if (m === 0) return `Parking for ${h} hr${h !== 1 ? "s" : ""}`;
+    return `Parking for ${h} hr${h !== 1 ? "s" : ""} ${m} min${m !== 1 ? "s" : ""}`;
   }
 
   // ---------- Screens ----------
@@ -165,7 +165,7 @@
     };
     saveSession(session);
     setupForm.reset();
-    endTimeInput.value = "15:40";
+    endTimeInput.value = "00:00";
     renderSession(session);
     showSession();
   });
@@ -175,6 +175,9 @@
     const [h, m] = timeStr.split(":").map(Number);
     const end = new Date(now);
     end.setHours(h, m, 0, 0);
+    if (end.getTime() <= now) {
+      end.setDate(end.getDate() + 1);
+    }
     return end.getTime();
   }
 
@@ -187,9 +190,9 @@
     dVehicle.textContent = session.vehicle || "";
 
     const now = Date.now();
-    const dayLabel = "today";
+    const dayLabel = isSameDay(session.endTime, now) ? "Today" : "Tomorrow";
     dExpires.textContent = `Expires ${dayLabel}, ${formatClockTime(session.endTime)}`;
-    dDuration.textContent = "Parking for 9h";
+    dDuration.textContent = formatDuration(session.durationMinutes);
 
     reminderToggle.checked = !!session.remindersOn;
     updatePermissionNote();
