@@ -312,8 +312,21 @@
   }
 
   let sheetDateItems = [];
-  const sheetHourItems = Array.from({ length: 12 }, (_, i) => i + 1); // 1-12
-  const sheetMinuteItems = Array.from({ length: 60 }, (_, i) => i); // 0-59
+  const HOUR_BASE = Array.from({ length: 12 }, (_, i) => i + 1); // 1-12
+  const MINUTE_BASE = Array.from({ length: 60 }, (_, i) => i); // 0-59
+  const HOUR_REPEATS = 21;
+  const MINUTE_REPEATS = 21;
+
+  function buildLoopedValues(base, repeats) {
+    const out = [];
+    for (let r = 0; r < repeats; r++) out.push(...base);
+    return out;
+  }
+
+  // Repeated many times over so scrolling past 12 continues into 1 (and
+  // scrolling above 1 continues into 12), simulating an endless wheel.
+  const sheetHourItems = buildLoopedValues(HOUR_BASE, HOUR_REPEATS);
+  const sheetMinuteItems = buildLoopedValues(MINUTE_BASE, MINUTE_REPEATS);
   const sheetAmpmItems = ["AM", "PM"];
 
   function getWheelSelection() {
@@ -389,8 +402,10 @@
     if (hour12 === 0) hour12 = 12;
 
     setWheelSelectedIndex(wheelDateEl, Math.max(0, dateIndex));
-    setWheelSelectedIndex(wheelHourEl, sheetHourItems.indexOf(hour12));
-    setWheelSelectedIndex(wheelMinuteEl, endDate.getMinutes());
+    const hourMiddleRepeat = Math.floor(HOUR_REPEATS / 2);
+    const minuteMiddleRepeat = Math.floor(MINUTE_REPEATS / 2);
+    setWheelSelectedIndex(wheelHourEl, hourMiddleRepeat * HOUR_BASE.length + HOUR_BASE.indexOf(hour12));
+    setWheelSelectedIndex(wheelMinuteEl, minuteMiddleRepeat * MINUTE_BASE.length + MINUTE_BASE.indexOf(endDate.getMinutes()));
     setWheelSelectedIndex(wheelAmpmEl, sheetAmpmItems.indexOf(ampm));
 
     [wheelDateEl, wheelHourEl, wheelMinuteEl, wheelAmpmEl].forEach(highlightWheelSelection);
