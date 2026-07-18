@@ -363,9 +363,11 @@
 
     const endDate = new Date(session.endTime);
 
-    // Build the date column: today plus the next 13 days.
+    // Build the date column starting from the day the parking currently
+    // ends (not today) — you can only extend forward from there, and the
+    // first option should be exactly the day/time it's set to end.
     sheetDateItems = [];
-    const base = new Date();
+    const base = new Date(session.endTime);
     base.setHours(0, 0, 0, 0);
     for (let i = 0; i < 14; i++) {
       const d = new Date(base);
