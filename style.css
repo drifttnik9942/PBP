@@ -292,20 +292,21 @@ body{
   z-index: 1;
   width: 100%;
   max-width: 480px;
-  max-height: 62vh;
+  max-height: 46vh;
   background: var(--bg);
   border-radius: 24px 24px 0 0;
-  padding: 10px 20px calc(20px + var(--safe-bottom));
+  padding: 8px 20px calc(14px + var(--safe-bottom));
+  overflow-y: auto;
   transition: transform 0.25s ease;
 }
 .sheet-handle{
   position: relative;
   width: 100%;
-  height: 28px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 0 14px;
+  margin: 0 0 8px;
   cursor: grab;
   touch-action: none;
 }
@@ -320,7 +321,7 @@ body{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 .sheet-header h3{
   margin: 0;
@@ -345,10 +346,10 @@ body{
 .wheel-picker{
   position: relative;
   display: flex;
-  height: 220px;
-  margin-bottom: 20px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+  height: 224px;
+  margin-bottom: 14px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
 }
 .wheel-highlight{
   position: absolute;
@@ -356,9 +357,9 @@ body{
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  height: 44px;
+  height: 32px;
   background: var(--panel);
-  border-radius: 12px;
+  border-radius: 10px;
   pointer-events: none;
   z-index: 2;
 }
@@ -366,7 +367,7 @@ body{
   position: relative;
   z-index: 3;
   flex: 1;
-  height: 220px;
+  height: 224px;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
@@ -375,22 +376,22 @@ body{
 }
 .wheel-col::-webkit-scrollbar{ display: none; }
 .wheel-col-date{ flex: 1.6; }
-.wheel-pad{ height: 88px; flex-shrink: 0; }
+.wheel-pad{ height: 96px; flex-shrink: 0; }
 .wheel-item{
-  height: 44px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   scroll-snap-align: center;
   color: var(--text-muted);
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
   transform-origin: center;
   will-change: transform, opacity;
   transition: color 0.12s;
 }
-.wheel-col-date .wheel-item{ font-size: 17px; }
+.wheel-col-date .wheel-item{ font-size: 14px; }
 .wheel-item.is-selected{
   color: var(--text);
 }

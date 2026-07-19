@@ -44,8 +44,8 @@
   const wheelAmpmEl = document.getElementById("wheel-ampm");
   const btnConfirmEndTime = document.getElementById("btn-confirm-end-time");
 
-  const WHEEL_ITEM_HEIGHT = 44;
-  const WHEEL_VISIBLE_ROWS = 8; // total container height in row-units (7 full rows + a half-row sliver top & bottom); must match .wheel-picker / .wheel-col height (352px)
+  const WHEEL_ITEM_HEIGHT = 32;
+  const WHEEL_VISIBLE_ROWS = 7; // must match .wheel-picker / .wheel-col height (224px)
 
   let tickHandle = null;
   let reminderTimeoutHandle = null;
