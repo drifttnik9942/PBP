@@ -310,7 +310,7 @@
       const i = Number(el.dataset.index);
       const delta = i - rawIndex;
       const angle = Math.max(-72, Math.min(72, delta * 24)); // curves like a rotating wheel
-      const opacity = Math.max(0.16, 1 - Math.min(1, Math.abs(delta) * 0.32));
+      const opacity = Math.max(0.3, 1 - Math.min(1, Math.abs(delta) * 0.2));
       el.style.transform = `rotateX(${angle}deg)`;
       el.style.opacity = String(opacity);
       el.classList.toggle("is-selected", i === selectedIndex);

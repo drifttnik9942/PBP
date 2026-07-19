@@ -348,8 +348,8 @@ body{
   display: flex;
   height: 224px;
   margin-bottom: 14px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%);
 }
 .wheel-highlight{
   position: absolute;
@@ -357,9 +357,9 @@ body{
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  height: 32px;
+  height: 28px;
   background: var(--panel);
-  border-radius: 10px;
+  border-radius: 9px;
   pointer-events: none;
   z-index: 2;
 }
