@@ -7,6 +7,7 @@
   const setupScreen = document.getElementById("setup-screen");
   const sessionScreen = document.getElementById("session-screen");
   const setupForm = document.getElementById("setup-form");
+  const startTimeInput = document.getElementById("f-start-time");
   const endTimeInput = document.getElementById("f-end-time");
   const vehiclePresetSelect = document.getElementById("f-vehicle-preset");
   const locationNameInput = document.getElementById("f-location-name");
@@ -163,8 +164,9 @@
     const vehicle = document.getElementById("f-vehicle").value.trim();
 
     const now = Date.now();
-    const endTime = computeEndTime(endTimeInput.value, now);
-    const durationMinutes = Math.max(1, Math.round((endTime - now) / 60000));
+    const startTime = computeTimeToday(startTimeInput.value, now);
+    const endTime = computeEndTime(endTimeInput.value, startTime);
+    const durationMinutes = Math.max(1, Math.round((endTime - startTime) / 60000));
 
     const session = {
       locationName,
@@ -172,23 +174,34 @@
       plate,
       vehicle,
       durationMinutes,
-      startTime: now,
+      startTime,
       endTime,
       remindersOn: true,
     };
     saveSession(session);
     setupForm.reset();
+    startTimeInput.value = "06:36";
     endTimeInput.value = "00:00";
     renderSession(session);
     showSession();
   });
 
   // Given a "HH:MM" time-of-day string, returns today's timestamp at that time.
-  function computeEndTime(timeStr, now) {
+  function computeTimeToday(timeStr, referenceMs) {
     const [h, m] = timeStr.split(":").map(Number);
-    const end = new Date(now);
+    const d = new Date(referenceMs);
+    d.setHours(h, m, 0, 0);
+    return d.getTime();
+  }
+
+  // Given a "HH:MM" time-of-day string, returns a timestamp at that time,
+  // rolling forward to the next day if it would otherwise fall at/before
+  // the reference moment (e.g. the parking start time).
+  function computeEndTime(timeStr, referenceMs) {
+    const [h, m] = timeStr.split(":").map(Number);
+    const end = new Date(referenceMs);
     end.setHours(h, m, 0, 0);
-    if (end.getTime() <= now) {
+    if (end.getTime() <= referenceMs) {
       end.setDate(end.getDate() + 1);
     }
     return end.getTime();
