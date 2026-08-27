@@ -63,6 +63,10 @@ body{
   aspect-ratio: 1200 / 611;
   padding-top: calc(var(--safe-top) + 14px);
   padding-bottom: 18px;
+  transition: background-image 0.2s ease;
+}
+.session-hero.bg-alt{
+  background-image: url("header-bg-gatineau.jpg");
 }
 .setup-hero::before, .session-hero::before{
   content: "";
@@ -92,6 +96,12 @@ body{
   letter-spacing: -0.02em;
 }
 
+.session-hero-topbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 11px;
+}
 .btn-close{
   align-self: flex-start;
   width: 47px;
@@ -103,9 +113,21 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 11px;
   margin-left: -4px;
 }
+.btn-header-toggle{
+  align-self: flex-start;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-header-toggle:active{ transform: scale(0.96); }
 .session-hero h1{
   margin: 0 0 0 -7px;
   transform: translateY(5px);

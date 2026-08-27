@@ -2,6 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "parking-session-v1";
+  const HEADER_BG_KEY = "parking-header-bg-v1";
 
   // ---------- DOM ----------
   const setupScreen = document.getElementById("setup-screen");
@@ -14,6 +15,9 @@
   const locationIdInput = document.getElementById("f-location-id");
   const plateInput = document.getElementById("f-plate");
   const vehicleInput = document.getElementById("f-vehicle");
+
+  const sessionHero = document.querySelector(".session-hero");
+  const btnHeaderToggle = document.getElementById("btn-header-toggle");
 
   const sessionTitle = document.getElementById("session-title");
   const countdownBox = document.getElementById("countdown-box");
@@ -68,6 +72,25 @@
   function clearSession() {
     localStorage.removeItem(STORAGE_KEY);
   }
+
+  // ---------- Header background choice ----------
+  function loadHeaderBg() {
+    try {
+      return localStorage.getItem(HEADER_BG_KEY) === "alt" ? "alt" : "default";
+    } catch (e) {
+      return "default";
+    }
+  }
+
+  function applyHeaderBg(choice) {
+    sessionHero.classList.toggle("bg-alt", choice === "alt");
+  }
+
+  btnHeaderToggle.addEventListener("click", () => {
+    const next = loadHeaderBg() === "alt" ? "default" : "alt";
+    localStorage.setItem(HEADER_BG_KEY, next);
+    applyHeaderBg(next);
+  });
 
   // ---------- Helpers ----------
   function pad(n) {
@@ -209,6 +232,7 @@
 
   // ---------- Render session details ----------
   function renderSession(session) {
+    applyHeaderBg(loadHeaderBg());
     sessionTitle.textContent = session.locationName || "Parking";
     dLocationId.textContent = session.locationId || "\u2014";
     dLocationName.textContent = session.locationName || "";
