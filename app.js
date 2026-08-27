@@ -16,7 +16,6 @@
   const plateInput = document.getElementById("f-plate");
   const vehicleInput = document.getElementById("f-vehicle");
 
-  const sessionHero = document.querySelector(".session-hero");
   const btnHeaderToggle = document.getElementById("btn-header-toggle");
 
   const sessionTitle = document.getElementById("session-title");
@@ -83,7 +82,7 @@
   }
 
   function applyHeaderBg(choice) {
-    sessionHero.classList.toggle("bg-alt", choice === "alt");
+    document.body.classList.toggle("bg-alt", choice === "alt");
   }
 
   btnHeaderToggle.addEventListener("click", () => {
@@ -232,7 +231,6 @@
 
   // ---------- Render session details ----------
   function renderSession(session) {
-    applyHeaderBg(loadHeaderBg());
     sessionTitle.textContent = session.locationName || "Parking";
     dLocationId.textContent = session.locationId || "\u2014";
     dLocationName.textContent = session.locationName || "";
@@ -532,6 +530,7 @@
 
   // ---------- Boot ----------
   function boot() {
+    applyHeaderBg(loadHeaderBg());
     applyVehiclePreset(vehiclePresetSelect.value);
     const existing = loadSession();
     if (existing) {

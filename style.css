@@ -65,8 +65,12 @@ body{
   padding-bottom: 18px;
   transition: background-image 0.2s ease;
 }
-.session-hero.bg-alt{
+body.bg-alt .setup-hero,
+body.bg-alt .session-hero{
   background-image: url("header-bg-gatineau.jpg");
+  background-position: center 60%;
+  background-size: 102%;
+  background-repeat: no-repeat;
 }
 .setup-hero::before, .session-hero::before{
   content: "";
@@ -96,12 +100,6 @@ body{
   letter-spacing: -0.02em;
 }
 
-.session-hero-topbar{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 11px;
-}
 .btn-close{
   align-self: flex-start;
   width: 47px;
@@ -113,10 +111,14 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 11px;
   margin-left: -4px;
 }
 .btn-header-toggle{
-  align-self: flex-start;
+  position: absolute;
+  top: calc(var(--safe-top) + 20px);
+  right: 24px;
+  z-index: 2;
   width: 40px;
   height: 40px;
   border-radius: 8px;
