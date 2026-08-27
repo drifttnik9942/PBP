@@ -68,8 +68,8 @@ body{
 body.bg-alt .setup-hero,
 body.bg-alt .session-hero{
   background-image: url("header-bg-gatineau.jpg");
-  background-position: center 60%;
-  background-size: 112%;
+  background-position: center calc(60% + 10px);
+  background-size: 117%;
   background-repeat: no-repeat;
 }
 .setup-hero::before, .session-hero::before{
