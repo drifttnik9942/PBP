@@ -74,9 +74,10 @@ body.bg-alt .session-hero{
 }
 body.bg-illustration .setup-hero,
 body.bg-illustration .session-hero{
+  background-color: #0f1210;
   background-image: url("header-bg-illustration.jpg");
-  background-position: center bottom;
-  background-size: cover;
+  background-position: center center;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 .setup-hero::before, .session-hero::before{
