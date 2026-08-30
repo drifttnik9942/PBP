@@ -72,6 +72,13 @@ body.bg-alt .session-hero{
   background-size: 117%;
   background-repeat: no-repeat;
 }
+body.bg-illustration .setup-hero,
+body.bg-illustration .session-hero{
+  background-image: url("header-bg-illustration.jpg");
+  background-position: center bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 .setup-hero::before, .session-hero::before{
   content: "";
   position: absolute;
@@ -152,6 +159,7 @@ body.bg-alt .session-hero{
   margin: 0 0 21px;
   font-size: 17px;
   font-weight: 700;
+  text-align: center;
 }
 
 /* ---------- Countdown ---------- */

@@ -73,9 +73,12 @@
   }
 
   // ---------- Header background choice ----------
+  const HEADER_BG_CHOICES = ["default", "alt", "illustration"];
+
   function loadHeaderBg() {
     try {
-      return localStorage.getItem(HEADER_BG_KEY) === "alt" ? "alt" : "default";
+      const stored = localStorage.getItem(HEADER_BG_KEY);
+      return HEADER_BG_CHOICES.includes(stored) ? stored : "default";
     } catch (e) {
       return "default";
     }
@@ -83,10 +86,13 @@
 
   function applyHeaderBg(choice) {
     document.body.classList.toggle("bg-alt", choice === "alt");
+    document.body.classList.toggle("bg-illustration", choice === "illustration");
   }
 
   btnHeaderToggle.addEventListener("click", () => {
-    const next = loadHeaderBg() === "alt" ? "default" : "alt";
+    const current = loadHeaderBg();
+    const nextIndex = (HEADER_BG_CHOICES.indexOf(current) + 1) % HEADER_BG_CHOICES.length;
+    const next = HEADER_BG_CHOICES[nextIndex];
     localStorage.setItem(HEADER_BG_KEY, next);
     applyHeaderBg(next);
   });
